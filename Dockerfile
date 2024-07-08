@@ -37,7 +37,7 @@ COPY --from=builder --chown=nextjs:nodejs /tmp/.next/static ./.next/static
 USER nextjs
 
 ENV NODE_ENV=production
-ENV PORT 3000
+ENV PORT=3000
 
 EXPOSE 3000
 

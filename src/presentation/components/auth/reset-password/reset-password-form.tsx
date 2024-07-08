@@ -110,7 +110,8 @@ export function ResetPasswordForm({ token, email }: Props) {
           label="Kata sandi"
           error={!!errors.password}
           helperText={errors.password?.message}
-          autoComplete="current-password"
+          autoComplete="new-password"
+          autoFocus
           fullWidth
           margin="dense"
           InputProps={{

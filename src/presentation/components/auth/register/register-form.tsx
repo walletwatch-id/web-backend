@@ -157,7 +157,6 @@ export function RegisterForm({ callbackUrl }: Props) {
           error={!!errors.emailAddress}
           helperText={errors.emailAddress?.message}
           autoComplete="email"
-          autoFocus
           fullWidth
           margin="dense"
           {...registerField('emailAddress')}

@@ -1,6 +1,5 @@
 import { alpha, darken, lighten } from '@mui/system';
 import { Components, Theme, ThemeOptions, createTheme } from '@mui/material/styles';
-import { DataGridComponents } from '@mui/x-data-grid/themeAugmentation';
 import { deepmerge } from '@mui/utils';
 
 export interface M3Tone {
@@ -812,20 +811,6 @@ export function createM3Theme({
           },
         },
       },
-      MuiDataGrid: {
-        styleOverrides: {
-          columnHeader: {
-            '&:last-of-type': {
-              '& .MuiDataGrid-columnSeparator': {
-                display: 'none',
-              },
-            },
-            '& .MuiDataGrid-columnSeparator': {
-              color: theme.palette.outlineVariant,
-            },
-          },
-        },
-      },
-    } satisfies Components & DataGridComponents,
+    } satisfies Components,
   });
 }

@@ -146,9 +146,3 @@ declare module '@mui/material/Fab' {
     surface: true;
   }
 }
-
-declare module '@mui/x-data-grid' {
-  interface NoRowsOverlayPropsOverrides {
-    text: string;
-  }
-}

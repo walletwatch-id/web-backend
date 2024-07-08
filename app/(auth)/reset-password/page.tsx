@@ -15,6 +15,7 @@ export const metadata: Metadata = {
 type Props = {
   searchParams: {
     token?: string;
+    email?: string;
   };
 };
 
@@ -30,15 +31,15 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
 
   if (user) {
     redirect('/dashboard');
+  } else {
+    return (
+      <section className="flex items-center px-6 py-20 min-h-screen md:px-12 lg:px-18">
+        {searchParams.token && searchParams.email ? (
+          <ResetPasswordForm token={searchParams.token} email={searchParams.email} />
+        ) : (
+          <ResetPasswordRequestForm />
+        )}
+      </section>
+    );
   }
-
-  return (
-    <section className="flex items-center px-6 py-20 min-h-screen md:px-12 lg:px-18">
-      {searchParams.token ? (
-        <ResetPasswordForm token={searchParams.token} />
-      ) : (
-        <ResetPasswordRequestForm />
-      )}
-    </section>
-  );
 }

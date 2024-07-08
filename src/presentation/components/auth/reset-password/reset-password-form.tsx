@@ -25,11 +25,6 @@ import NextLink from 'next/link';
 
 const resetPasswordInputSchema = z
   .object({
-    emailAddress: z
-      .string()
-      .trim()
-      .min(1, { message: 'Alamat email tidak boleh kosong' })
-      .email('Alamat email tidak valid'),
     password: z.string().min(1, { message: 'Password tidak boleh kosong' }),
     passwordConfirmation: z
       .string()
@@ -49,9 +44,10 @@ type ResetPasswordInput = TypeOf<typeof resetPasswordInputSchema>;
 
 type Props = {
   token: string;
+  email: string;
 };
 
-export function ResetPasswordForm({ token }: Props) {
+export function ResetPasswordForm({ token, email }: Props) {
   const router = useRouter();
   const resetPassword = clientContainer.get<ResetPassword>(Symbols.ResetPassword);
 
@@ -84,8 +80,7 @@ export function ResetPasswordForm({ token }: Props) {
       persist: true,
     });
     const result = await enqueueSnackbarOnError(
-      () =>
-        resetPassword.execute(data.emailAddress, token, data.password, data.passwordConfirmation),
+      () => resetPassword.execute(email, token, data.password, data.passwordConfirmation),
       () => setLoading(false),
     );
 
@@ -109,17 +104,6 @@ export function ResetPasswordForm({ token }: Props) {
       </Typography>
 
       <Box component="form" noValidate className="mt-4 text-right" onSubmit={handleResetPassword}>
-        <TextField
-          id="email"
-          label="Alamat email"
-          error={!!errors.emailAddress}
-          helperText={errors.emailAddress?.message}
-          autoComplete="email"
-          autoFocus
-          fullWidth
-          margin="dense"
-          {...register('emailAddress')}
-        />
         <TextField
           id="password"
           type={showPassword ? 'text' : 'password'}

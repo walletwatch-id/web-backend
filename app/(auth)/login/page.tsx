@@ -29,9 +29,9 @@ export default async function LoginPage({ searchParams }: Props) {
   if (user) {
     if (searchParams.callback_url) {
       redirect(searchParams.callback_url);
+    } else {
+      redirect('/dashboard');
     }
-
-    redirect('/dashboard');
   }
 
   return (

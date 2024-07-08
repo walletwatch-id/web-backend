@@ -1,4 +1,5 @@
 import { AuthorizeForm } from '@/presentation/components/auth/authorize';
+import { AuthorizePrompt, AuthorizeRedirect } from '@/domain/entities';
 import { Authorize } from '@/application/server';
 import { ClientUIMapper, ScopeUIMapper } from '@/presentation/dtos';
 import { ForbiddenError, UnauthorizedError } from '@/domain/errors';
@@ -7,7 +8,6 @@ import { Metadata } from 'next';
 import { redirect, RedirectType } from 'next/navigation';
 import { serverContainer } from '@/server-injection';
 import { Symbols } from '@/config/symbols';
-import { User, Client, Scope } from '@/domain/entities';
 
 export const metadata: Metadata = {
   title: 'Otorisasi',
@@ -23,37 +23,25 @@ export default async function AuthorizePage({ searchParams }: Props) {
   const authorize = serverContainer.get<Authorize>(Symbols.Authorize);
   const headerUrl = headers().get('x-url') ?? '';
   const url = new URL(headerUrl);
-  let result:
-    | {
-        user: User;
-        client: Client;
-        scopes: Scope[];
-        authToken: string;
-      }
-    | {
-        redirect: string;
-      }
-    | undefined;
+  let result: AuthorizePrompt | AuthorizeRedirect | undefined;
 
   try {
     result = await authorize.execute(url.searchParams);
   } catch (error) {
     if (error instanceof ForbiddenError && error.message.includes('not verified')) {
-      redirect('/verify-email', RedirectType.push);
+      const callbackUrl = encodeURIComponent(`${url.pathname}?${url.searchParams.toString()}`);
+
+      redirect(`/verify-email?callback_url=${callbackUrl}`);
     } else if (error instanceof UnauthorizedError && error.message.includes('Unauthenticated')) {
-      if (url) {
-        const searchParams = url.searchParams;
+      const searchParams = url.searchParams;
 
-        if (searchParams.get('prompt') === 'login') {
-          searchParams.delete('prompt');
-        }
-
-        const callbackUrl = encodeURIComponent(`${url.pathname}?${searchParams.toString()}`);
-
-        redirect(`/login?callback_url=${callbackUrl}`, RedirectType.push);
-      } else {
-        redirect('/login', RedirectType.push);
+      if (searchParams.get('prompt') === 'login') {
+        searchParams.delete('prompt');
       }
+
+      const callbackUrl = encodeURIComponent(`${url.pathname}?${searchParams.toString()}`);
+
+      redirect(`/login?callback_url=${callbackUrl}`);
     } else {
       throw error;
     }

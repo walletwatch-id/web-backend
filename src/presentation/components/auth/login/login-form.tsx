@@ -130,7 +130,16 @@ export function LoginForm({ callbackUrl }: Props) {
           {...register('password')}
         />
 
-        <Button LinkComponent={NextLink} variant="text" size="small" href="/reset-password">
+        <Button
+          LinkComponent={NextLink}
+          variant="text"
+          size="small"
+          href={
+            callbackUrl
+              ? `/reset-password?callback_url=${encodeURIComponent(callbackUrl)}`
+              : '/reset-password'
+          }
+        >
           Lupa kata sandi?
         </Button>
         <Button type="submit" variant="filled" fullWidth disabled={loading} className="mt-3">

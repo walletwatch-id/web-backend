@@ -22,7 +22,11 @@ const resetPasswordRequestInputSchema = z.object({
 
 type ResetPasswordRequestInput = TypeOf<typeof resetPasswordRequestInputSchema>;
 
-export function ResetPasswordRequestForm() {
+type Props = {
+  callbackUrl?: string;
+};
+
+export function ResetPasswordRequestForm({ callbackUrl }: Props) {
   const sendResetPasswordNotification = clientContainer.get<SendResetPasswordNotification>(
     Symbols.SendResetPasswordNotification,
   );
@@ -99,7 +103,13 @@ export function ResetPasswordRequestForm() {
 
             <Typography component="p" className="mt-8 text-center text-sm">
               Sudah ingat kata sandimu?{' '}
-              <Link component={NextLink} className="no-underline hover:underline" href="/login">
+              <Link
+                component={NextLink}
+                className="no-underline hover:underline"
+                href={
+                  callbackUrl ? `/login?callback_url=${encodeURIComponent(callbackUrl)}` : '/login'
+                }
+              >
                 Masuk!
               </Link>
             </Typography>

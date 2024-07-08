@@ -16,6 +16,7 @@ type Props = {
   searchParams: {
     token?: string;
     email?: string;
+    callback_url?: string;
   };
 };
 
@@ -30,14 +31,18 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
   }
 
   if (user) {
-    redirect('/dashboard');
+    if (searchParams.callback_url) {
+      redirect(searchParams.callback_url);
+    } else {
+      redirect('/dashboard');
+    }
   } else {
     return (
       <section className="flex items-center px-6 py-20 min-h-screen md:px-12 lg:px-18">
         {searchParams.token && searchParams.email ? (
           <ResetPasswordForm token={searchParams.token} email={searchParams.email} />
         ) : (
-          <ResetPasswordRequestForm />
+          <ResetPasswordRequestForm callbackUrl={searchParams.callback_url} />
         )}
       </section>
     );

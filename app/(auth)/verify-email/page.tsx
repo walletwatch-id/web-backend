@@ -1,5 +1,6 @@
 import { ForbiddenError, UnauthorizedError } from '@/domain/errors';
 import { GetUser, VerifyEmail } from '@/application/server';
+import { headers } from 'next/headers';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { serverContainer } from '@/server-injection';
@@ -17,19 +18,28 @@ type Props = {
     hash?: string;
     expires?: number;
     signature?: string;
+    callback_url?: string;
   };
 };
 
 export default async function VerifyEmailNoticePage({ searchParams }: Props) {
   const getUser = serverContainer.get<GetUser>(Symbols.GetUser);
   const verifyEmail = serverContainer.get<VerifyEmail>(Symbols.VerifyEmail);
+  const headerUrl = headers().get('x-url') ?? '';
+  const url = new URL(headerUrl);
   let user: User | undefined;
 
   try {
     user = await getUser.execute();
   } catch (error) {
     if (error instanceof UnauthorizedError && error.message.includes('Unauthenticated')) {
-      redirect('/login');
+      if (searchParams.callback_url) {
+        const callbackUrl = encodeURIComponent(`${url.pathname}?${url.searchParams.toString()}`);
+
+        redirect(`/login?callback_url=${callbackUrl}`);
+      } else {
+        redirect('/login');
+      }
     } else if (error instanceof ForbiddenError && error.message.includes('not verified')) {
       // Do nothing, this page is for unverified user
     } else {
@@ -41,7 +51,11 @@ export default async function VerifyEmailNoticePage({ searchParams }: Props) {
     user &&
     !(searchParams.id && searchParams.hash && searchParams.expires && searchParams.signature)
   ) {
-    redirect('/dashboard');
+    if (searchParams.callback_url) {
+      redirect(searchParams.callback_url);
+    } else {
+      redirect('/dashboard');
+    }
   } else if (
     searchParams.id &&
     searchParams.hash &&
@@ -49,6 +63,7 @@ export default async function VerifyEmailNoticePage({ searchParams }: Props) {
     searchParams.signature
   ) {
     let success = false;
+
     try {
       success = await verifyEmail.execute(
         searchParams.id,
@@ -65,7 +80,11 @@ export default async function VerifyEmailNoticePage({ searchParams }: Props) {
     }
 
     if (success) {
-      redirect('/dashboard');
+      if (searchParams.callback_url) {
+        redirect(searchParams.callback_url);
+      } else {
+        redirect('/dashboard');
+      }
     }
   } else {
     return (

@@ -26,7 +26,7 @@ RUN npm run build
 FROM base AS runner
 
 ARG UID=1001 \
-    GID=1001 \
+    GID=1001
 
 WORKDIR /walletwatch
 

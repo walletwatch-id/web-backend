@@ -7,9 +7,9 @@ RUN apk add --no-cache libc6-compat
 
 WORKDIR /tmp
 
-COPY package*.json ./
+COPY --link package*.json ./
 
-RUN --mount=type=cache,target=/.npm \
+RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
 # Build the source code
@@ -17,7 +17,7 @@ FROM base AS builder
 
 WORKDIR /tmp
 
-COPY --from=deps /tmp/node_modules ./node_modules
+COPY --link --from=deps /tmp/node_modules ./node_modules
 COPY . .
 
 RUN npm run build
@@ -25,19 +25,22 @@ RUN npm run build
 # Copy all files to production image
 FROM base AS runner
 
+ARG UID=1001 \
+    GID=1001 \
+
 WORKDIR /walletwatch
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
+RUN addgroup -S nodejs -g ${GID} && \
+    adduser -S nextjs -u ${UID}
 
-COPY --from=builder /tmp/public ./public
-COPY --from=builder --chown=nextjs:nodejs /tmp/.next/standalone ./
-COPY --from=builder --chown=nextjs:nodejs /tmp/.next/static ./.next/static
+COPY --link --from=builder /tmp/public ./public
+COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/standalone ./
+COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/static ./.next/static
 
 USER nextjs
 
-ENV NODE_ENV=production
-ENV PORT=3000
+ENV NODE_ENV=production \
+    PORT=3000
 
 EXPOSE 3000
 

@@ -28,6 +28,9 @@ FROM base AS runner
 ARG UID=1001 \
     GID=1001
 
+ENV NODE_ENV=production \
+    PORT=3000
+
 WORKDIR /walletwatch
 
 RUN addgroup -S nodejs -g ${GID} && \
@@ -38,9 +41,6 @@ COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/standalone ./
 COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/static ./.next/static
 
 USER nextjs
-
-ENV NODE_ENV=production \
-    PORT=3000
 
 EXPOSE 3000
 

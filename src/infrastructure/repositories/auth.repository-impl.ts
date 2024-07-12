@@ -180,7 +180,7 @@ export class AuthRepositoryImpl implements AuthRepository {
 
   public authorize(params: URLSearchParams): Promise<AuthorizePrompt | AuthorizeRedirect> {
     return this.withErrorHandler(async () => {
-      const response = await this.apiDataSource.get('/oauth/_authorize', {
+      const response = await this.apiDataSource.get('/oauth2/_authorize', {
         params,
       });
 
@@ -208,7 +208,7 @@ export class AuthRepositoryImpl implements AuthRepository {
     const _token = await this.getCsrfToken();
 
     return this.withErrorHandler(async () => {
-      const response = await this.apiDataSource.post('/oauth/_authorize', {
+      const response = await this.apiDataSource.post('/oauth2/_authorize', {
         state,
         client_id: clientId,
         auth_token: authToken,
@@ -227,7 +227,7 @@ export class AuthRepositoryImpl implements AuthRepository {
     const _token = await this.getCsrfToken();
 
     return this.withErrorHandler(async () => {
-      const response = await this.apiDataSource.delete('/oauth/_authorize', {
+      const response = await this.apiDataSource.delete('/oauth2/_authorize', {
         data: {
           state,
           client_id: clientId,

@@ -130,7 +130,7 @@ export function ResetPasswordForm({ token, email }: Props) {
           {...register('password')}
         />
         <TextField
-          id="password"
+          id="password-confirmation"
           type={showPasswordConfirmation ? 'text' : 'password'}
           label="Konfirmasi kata sandi"
           error={!!errors.passwordConfirmation}

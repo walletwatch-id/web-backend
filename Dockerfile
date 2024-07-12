@@ -18,9 +18,10 @@ FROM base AS builder
 WORKDIR /tmp
 
 COPY --link --from=deps /tmp/node_modules ./node_modules
-COPY . .
+COPY --link . .
 
-RUN npm run build
+RUN --mount=type=cache,target=~/.next/cache \
+    npm run build
 
 # Copy all files to production image
 FROM base AS runner
@@ -36,11 +37,11 @@ WORKDIR /walletwatch
 RUN addgroup -S nodejs -g ${GID} && \
     adduser -S nextjs -u ${UID}
 
+USER nextjs
+
 COPY --link --from=builder /tmp/public ./public
 COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/standalone ./
 COPY --link --from=builder --chown=${UID}:${GID} /tmp/.next/static ./.next/static
-
-USER nextjs
 
 EXPOSE 3000
 

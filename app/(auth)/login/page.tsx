@@ -7,7 +7,7 @@ import { serverContainer } from '@/server-injection';
 import { User } from '@/domain/entities';
 
 export const metadata: Metadata = {
-  title: 'Login',
+  title: 'Masuk',
 };
 
 type Props = {

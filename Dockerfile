@@ -30,6 +30,7 @@ ARG UID=1001 \
     GID=1001
 
 ENV NODE_ENV=production \
+    HOSTNAME=0.0.0.0 \
     PORT=3000
 
 WORKDIR /walletwatch

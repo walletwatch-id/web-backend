@@ -35,11 +35,11 @@ jobs:
           tags: type=semver,pattern={{version}}
           labels: |
             org.opencontainers.image.title=WalletWatch Web Front-End
-            org.opencontainers.image.description=WalletWatch front-end web app image, see https://github.com/walletwatch-id/web-frontend for more info.
+            org.opencontainers.image.description=WalletWatch front-end web app image, see https://github.com/walletwatch-id/web-backend for more info.
             org.opencontainers.image.vendor=WalletWatch
           annotations: |
             org.opencontainers.image.title=WalletWatch Web Front-End
-            org.opencontainers.image.description=WalletWatch front-end web app image, see https://github.com/walletwatch-id/web-frontend for more info.
+            org.opencontainers.image.description=WalletWatch front-end web app image, see https://github.com/walletwatch-id/web-backend for more info.
             org.opencontainers.image.vendor=WalletWatch
 
       - name: Build and push Docker image

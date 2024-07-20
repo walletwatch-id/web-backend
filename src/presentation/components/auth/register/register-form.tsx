@@ -119,7 +119,7 @@ export function RegisterForm({ callbackUrl }: Props) {
       closeSnackbar(loadingKey);
 
       if (callbackUrl) {
-        router.push(callbackUrl);
+        router.push(`/verify-email?callback_url=${callbackUrl}`);
       } else {
         router.push('/dashboard');
       }

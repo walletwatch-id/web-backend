@@ -33,13 +33,9 @@ export default async function VerifyEmailNoticePage({ searchParams }: Props) {
     user = await getUser.execute();
   } catch (error) {
     if (error instanceof UnauthorizedError && error.message.includes('Unauthenticated')) {
-      if (searchParams.callback_url) {
-        const callbackUrl = encodeURIComponent(`${url.pathname}?${url.searchParams.toString()}`);
+      const callbackUrl = encodeURIComponent(`${url.pathname}?${url.searchParams.toString()}`);
 
-        redirect(`/login?callback_url=${callbackUrl}`);
-      } else {
-        redirect('/login');
-      }
+      redirect(`/login?callback_url=${callbackUrl}`);
     } else if (error instanceof ForbiddenError && error.message.includes('not verified')) {
       // Do nothing, this page is for unverified user
     } else {
@@ -47,10 +43,7 @@ export default async function VerifyEmailNoticePage({ searchParams }: Props) {
     }
   }
 
-  if (
-    user &&
-    !(searchParams.id && searchParams.hash && searchParams.expires && searchParams.signature)
-  ) {
+  if (user) {
     if (searchParams.callback_url) {
       redirect(searchParams.callback_url);
     } else {

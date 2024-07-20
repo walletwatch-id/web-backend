@@ -1,3 +1,4 @@
+import { ForbiddenError } from '@/domain/errors';
 import { GetUser } from '@/application/server';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
@@ -8,6 +9,7 @@ import {
 import { Symbols } from '@/config/symbols';
 import { serverContainer } from '@/server-injection';
 import { User } from '@/domain/entities';
+
 export const metadata: Metadata = {
   title: 'Atur Ulang Kata Sandi',
 };
@@ -27,7 +29,9 @@ export default async function ResetPasswordPage({ searchParams }: Props) {
   try {
     user = await getUser.execute();
   } catch (error) {
-    // Do nothing
+    if (error instanceof ForbiddenError && error.message.includes('not verified')) {
+      redirect(`/verify-email?callback_url=${searchParams.callback_url}`);
+    }
   }
 
   if (user) {

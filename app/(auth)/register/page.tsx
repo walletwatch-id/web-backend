@@ -1,3 +1,4 @@
+import { ForbiddenError } from '@/domain/errors';
 import { GetUser } from '@/application/server';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
@@ -23,7 +24,9 @@ export default async function RegisterPage({ searchParams }: Props) {
   try {
     user = await getUser.execute();
   } catch (error) {
-    // Do nothing
+    if (error instanceof ForbiddenError && error.message.includes('not verified')) {
+      redirect(`/verify-email?callback_url=${searchParams.callback_url}`);
+    }
   }
 
   if (user) {

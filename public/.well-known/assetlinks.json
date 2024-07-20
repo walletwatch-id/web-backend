@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "id.walletwatch.mobile",
+      "sha256_cert_fingerprints": [
+        "3F:4E:A3:FE:5A:52:D8:70:3D:9F:38:60:3A:F2:58:D7:37:7B:12:EF:11:C2:5A:C7:11:84:C1:3B:3D:22:1F:CC"
+      ]
+    }
+  }
+]

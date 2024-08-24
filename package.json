@@ -28,7 +28,7 @@
     "react-hook-form": "7.52.2",
     "reflect-metadata": "0.2.2",
     "set-cookie-parser": "2.7.0",
-    "sharp": "0.33.4",
+    "sharp": "0.33.5",
     "tss-react": "4.9.12",
     "zod": "3.23.8",
     "zustand": "4.5.5"
@@ -36,8 +36,8 @@
   "devDependencies": {
     "@types/cookie": "0.6.0",
     "@types/luxon": "3.4.2",
-    "@types/node": "20.14.15",
-    "@types/react": "18.3.3",
+    "@types/node": "20.16.1",
+    "@types/react": "18.3.4",
     "@types/react-dom": "18.3.0",
     "@types/set-cookie-parser": "2.4.10",
     "@typescript-eslint/eslint-plugin": "7.18.0",

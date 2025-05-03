@@ -36,9 +36,9 @@
   "devDependencies": {
     "@types/cookie": "0.6.0",
     "@types/luxon": "3.6.2",
-    "@types/node": "20.17.30",
+    "@types/node": "20.17.32",
     "@types/react": "18.3.20",
-    "@types/react-dom": "18.3.6",
+    "@types/react-dom": "18.3.7",
     "@types/set-cookie-parser": "2.4.10",
     "@typescript-eslint/eslint-plugin": "7.18.0",
     "autoprefixer": "10.4.21",

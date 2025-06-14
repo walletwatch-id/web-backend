@@ -30,7 +30,7 @@
     "set-cookie-parser": "2.7.1",
     "sharp": "0.34.2",
     "tss-react": "4.9.18",
-    "zod": "3.25.58",
+    "zod": "3.25.61",
     "zustand": "4.5.7"
   },
   "devDependencies": {
